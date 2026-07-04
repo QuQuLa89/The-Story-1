@@ -38,6 +38,7 @@ def type_line(text: str, delay: float = DEFAULT_DELAY) -> None:
 
 def wait_for_enter() -> None:
     input("[Enterキーで続行]")
+    clear_screen()
 
 
 def say(text: str, delay: float = DEFAULT_DELAY) -> None:
