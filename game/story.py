@@ -79,14 +79,14 @@ def run_fight(state: dict) -> None:
     for line in script.FIGHT_TURN1_RESPONSE:
         say(line)
 
-    prompt_command("1. attack", ["attack"])
+    prompt_command("1. /attack", ["attack"])
     hp -= 100
     print("【笹原に100ダメージ！】")
     print(f"(残HP {hp}/400)")
     for line in script.FIGHT_TURN2_RESPONSE:
         say(line)
 
-    prompt_command("1. attack", ["attack"])
+    prompt_command("1. /attack", ["attack"])
     hp -= 100
     print("【笹原に100ダメージ！】")
     print(f"(残HP {hp}/400)")
