@@ -25,3 +25,11 @@ def save(data: dict) -> None:
     os.makedirs(SAVE_DIR, exist_ok=True)
     with open(SAVE_PATH, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
+
+
+def write_thanks_note(text: str) -> None:
+    os.makedirs(SAVE_DIR, exist_ok=True)
+    path = os.path.join(SAVE_DIR, "for_you.txt")
+    if not os.path.exists(path):
+        with open(path, "w", encoding="utf-8") as f:
+            f.write(text)
