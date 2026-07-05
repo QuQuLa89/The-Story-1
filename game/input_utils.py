@@ -45,13 +45,3 @@ def normalize_command(raw: str) -> str:
     raw = raw.strip().lstrip("/")
     raw = re.sub(r"\s+", " ", raw)
     return raw.lower()
-
-
-def prompt_command(label_line: str, accepted: list) -> None:
-    """label_lineを表示し、acceptedに含まれる正規化済みコマンドが入力されるまで待つ。"""
-    print(label_line)
-    while True:
-        raw = input("> ")
-        if normalize_command(raw) in accepted:
-            return
-        print("（そのコマンドは認識されませんでした）")

@@ -9,6 +9,7 @@ venv/
 
 # Save data (runtime-generated, not source)
 save/*.json
+save/*.txt
 
 # Environment / secrets
 .env
