@@ -59,7 +59,7 @@ def run_chapter_xxx() -> None:
 
     for line in script.CHAPTER_XXX_PART2:
         say(line)
-    say(script.CHAPTER_XXX_FINAL_LINE, delay=0.1)
+    say(script.CHAPTER_XXX_FINAL_LINE, delay=0.2)
 
 
 def run_fight(state: dict) -> None:
@@ -98,17 +98,17 @@ def run_fight(state: dict) -> None:
     print("(残HP ■■/400)")
 
     for line in script.FIGHT_FINISH_LINES:
-        say(line, delay=0.1)
+        say(line, delay=0.2)
 
-    say(script.FIGHT_SORRY_LINE, delay=0.2)
+    say(script.FIGHT_SORRY_LINE, delay=0.4)
 
     time.sleep(3)
     state["true_end"] = True
     save_data.save(state)
 
-    say(script.FIGHT_END_LINE, delay=0.04)
+    say(script.FIGHT_END_LINE, delay=0.08)
 
 
 def run_true_end_replay() -> None:
     print_divider()
-    say(script.FIGHT_END_LINE, delay=0.04)
+    say(script.FIGHT_END_LINE, delay=0.08)
