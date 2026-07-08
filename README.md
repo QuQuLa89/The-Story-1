@@ -6,13 +6,19 @@
 
 - Python 3.10 以降
 - Windows（矢印キー入力に `msvcrt`、コンソール制御に `ctypes` を使用しているため、現状 Windows 専用）
-- 外部ライブラリ不要（標準ライブラリのみで動作）
+- 外部ライブラリ不要（標準ライブラリのみで動作）、[Poetry](https://python-poetry.org/) で環境管理
 - mercy
+
+## セットアップ
+
+```bash
+poetry install
+```
 
 ## 遊び方
 
 ```bash
-python main.py
+poetry run python main.py
 ```
 
 - 台詞は自動で1文字ずつ表示され、`Enterキーで続行` の表示後に Enter を押すと次に進む。
@@ -36,6 +42,8 @@ game/
   script.py          台詞・選択肢テキスト
   story.py           各チャプターの進行ロジック
 save/                セーブデータ（Git管理外）
+pyproject.toml
+poetry.lock
 ```
 
 ## 更新履歴
