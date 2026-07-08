@@ -1,13 +1,18 @@
 from game import save_data, story
-from game.display import clear_screen, enable_windows_ansi
+from game.display import enable_windows_ansi
 
 
 def main() -> None:
     enable_windows_ansi()
     state = save_data.load()
+    corrupted = state.pop("_corrupted", False)
 
     if state.get("true_end"):
-        story.run_true_end_replay()
+        story.run_true_end_replay(state)
+        return
+
+    if state.get("fight_state"):
+        story.resume_fight(state)
         return
 
     state["launch_count"] += 1
@@ -15,15 +20,7 @@ def main() -> None:
 
     variant = min(state["launch_count"], 3)
 
-    story.run_chapter_000(variant)
-    story.run_chapter_001(state)
-    story.run_chapter_002(variant)
-
-    if set(state["choices_made"]) == {1, 2, 3}:
-        story.run_all_clear()
-        story.run_chapter_xxx()
-        clear_screen()
-        story.run_fight(state)
+    story.run_story(state, variant, corrupted)
 
 
 if __name__ == "__main__":
