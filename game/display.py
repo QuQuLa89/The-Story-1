@@ -3,7 +3,7 @@ import os
 import sys
 import time
 
-DEFAULT_DELAY = 0.08
+DEFAULT_DELAY = 0.04
 
 
 def enable_windows_ansi() -> None:

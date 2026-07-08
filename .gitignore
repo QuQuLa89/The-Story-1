@@ -8,8 +8,7 @@ __pycache__/
 venv/
 
 # Save data (runtime-generated, not source)
-save/*.json
-save/*.txt
+save/
 
 # Environment / secrets
 .env
