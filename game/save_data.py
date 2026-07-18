@@ -12,7 +12,15 @@ DEFAULT_SAVE = {
     "true_end": False,
 }
 
-_FIGHT_STATE_INT_FIELDS = ("turn", "hp", "mercy_count", "empty_count", "eof_count", "stall_count", "restart_count")
+_FIGHT_STATE_INT_FIELDS = (
+    "turn",
+    "hp",
+    "mercy_count",
+    "empty_count",
+    "eof_count",
+    "stall_count",
+    "restart_count",
+)
 _FIGHT_STATE_BOOL_FIELDS = ("resume_line_shown", "mercy_locked")
 
 
@@ -60,16 +68,24 @@ def load() -> dict:
     merged.update(data)
 
     launch_count = merged.get("launch_count")
-    if not isinstance(launch_count, int) or isinstance(launch_count, bool) or launch_count < 0:
+    if (
+        not isinstance(launch_count, int)
+        or isinstance(launch_count, bool)
+        or launch_count < 0
+    ):
         merged["launch_count"] = DEFAULT_SAVE["launch_count"]
         corrupted = True
 
     choices = merged.get("choices_made")
-    if isinstance(choices, list) and all(isinstance(c, int) and c in (1, 2, 3) for c in choices):
+    if isinstance(choices, list) and all(
+        isinstance(c, int) and c in (1, 2, 3) for c in choices
+    ):
         merged["choices_made"] = choices
     else:
         merged["choices_made"] = (
-            [c for c in choices if isinstance(c, int) and c in (1, 2, 3)] if isinstance(choices, list) else []
+            [c for c in choices if isinstance(c, int) and c in (1, 2, 3)]
+            if isinstance(choices, list)
+            else []
         )
         corrupted = True
 
@@ -81,7 +97,9 @@ def load() -> dict:
         merged.pop("fight_cleared", None)
 
     if "fight_state" in merged:
-        fixed_fight_state, fight_state_corrupted = _sanitize_fight_state(merged["fight_state"])
+        fixed_fight_state, fight_state_corrupted = _sanitize_fight_state(
+            merged["fight_state"]
+        )
         if fixed_fight_state is None:
             merged.pop("fight_state", None)
         else:
