@@ -130,7 +130,11 @@ def _fight_prompt(fs: dict, label_line: str, expected_cmd: str) -> str:
             if cmd != expected_cmd:
                 print("（そのコマンドは認識されませんでした）")
                 continue
-            if fs["mercy_count"] >= 1 and cmd == "attack" and not fs["resume_line_shown"]:
+            if (
+                fs["mercy_count"] >= 1
+                and cmd == "attack"
+                and not fs["resume_line_shown"]
+            ):
                 say(script.FIGHT_MERCY_RESUME_LINE)
                 fs["resume_line_shown"] = True
             return "normal"
@@ -201,7 +205,9 @@ def _run_fight_from(state: dict, fs: dict) -> None:
             fs["turn"] += 1
 
         if not forced_end and fs["turn"] == 3:
-            status = _fight_prompt(fs, "1. /kill SasaharaKazuyuki", "kill sasaharakazuyuki")
+            status = _fight_prompt(
+                fs, "1. /kill SasaharaKazuyuki", "kill sasaharakazuyuki"
+            )
             forced_end = status == "forced_end"
 
         print("【2,147,483,647 damage!!!!!】")
