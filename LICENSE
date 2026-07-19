@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2026 鳥籠フォアグラ
+Copyright (c) 2026 QuQuLa89
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,7 @@ SOFTWARE.
 ---
 
 Exceptions:
-The text content and scenario data contained in the file "game/script.py" (specifically, the dialog lines and choice texts) are not covered by the MIT License. All rights to this content are reserved by the author (鳥籠フォアグラ). Unauthorized reproduction, modification, distribution, or commercial use of this content is strictly prohibited.
+The text content and scenario data contained in the file "game/script.py" (specifically, the dialog lines and choice texts) are not covered by the MIT License. All rights to this content are reserved by the author (QuQuLa89). Unauthorized reproduction, modification, distribution, or commercial use of this content is strictly prohibited.
 
 例外：
-ファイル「game/script.py」に含まれるテキストコンテンツおよびシナリオデータ（具体的には、台詞および選択肢データ）は、本MITライセンスの適用対象外です。これらのコンテンツに関するすべての権利は、著作者（鳥籠フォアグラ）に帰属し、保留されています。無断での複製、改変、配布、および商業的利用を一切禁止します。
+ファイル「game/script.py」に含まれるテキストコンテンツおよびシナリオデータ（具体的には、台詞および選択肢データ）は、本MITライセンスの適用対象外です。これらのコンテンツに関するすべての権利は、著作者（QuQuLa89）に帰属し、保留されています。無断での複製、改変、配布、および商業的利用を一切禁止します。

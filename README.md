@@ -70,4 +70,4 @@ poetry.lock
 
 ## ライセンス
 
-本プロジェクトのソースコードは MIT ライセンスの下でオープンソースとして公開されていますが、ファイル [game/script.py](file:///C:/Projects/The-Story-1/game/script.py) に含まれるテキストコンテンツおよびシナリオデータ（台詞や選択肢テキストなど）は対象外です。これらのテキストデータの著作権は著作者（鳥籠フォアグラ）に帰属し、すべての権利が保留されています（All Rights Reserved）。無断での複製、改変、転載、および二次利用を一切禁止します。詳細は [LICENSE](file:///C:/Projects/The-Story-1/LICENSE) ファイルをご参照ください。
+本プロジェクトのソースコードは MIT ライセンスの下でオープンソースとして公開されていますが、ファイル [game/script.py](file:///C:/Projects/The-Story-1/game/script.py) に含まれるテキストコンテンツおよびシナリオデータ（台詞や選択肢テキストなど）は対象外です。これらのテキストデータの著作権は著作者（QuQuLa89）に帰属し、すべての権利が保留されています（All Rights Reserved）。無断での複製、改変、転載、および二次利用を一切禁止します。詳細は [LICENSE](file:///C:/Projects/The-Story-1/LICENSE) ファイルをご参照ください。
