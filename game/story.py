@@ -128,7 +128,7 @@ def _fight_prompt(fs: dict, label_line: str, expected_cmd: str) -> str:
             if fs["mercy_count"] >= 5:
                 return "forced_end"
             if cmd != expected_cmd:
-                print("（そのコマンドは認識されませんでした）")
+                print("（そのコマンドは認識されませんでした。正しいコマンドを入力してください。）")
                 continue
             if (
                 fs["mercy_count"] >= 1
