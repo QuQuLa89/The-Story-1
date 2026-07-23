@@ -5,6 +5,7 @@ SAVE_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "save")
 SAVE_PATH = os.path.join(SAVE_DIR, "save.json")
 THANKS_NOTE_FILENAME = "for_you.txt"
 WHAT_HAPPENED_FILENAME = "what_happend.txt"
+TOO_MUCH_FILENAME = "too_much.txt"
 
 DEFAULT_SAVE = {
     "launch_count": 0,
@@ -20,6 +21,8 @@ _FIGHT_STATE_INT_FIELDS = (
     "eof_count",
     "stall_count",
     "restart_count",
+    "invalid_count",
+    "ctrl_c_count",
 )
 _FIGHT_STATE_BOOL_FIELDS = ("resume_line_shown", "mercy_locked")
 
@@ -131,3 +134,7 @@ def write_thanks_note(text: str) -> None:
 
 def write_what_happened(text: str) -> None:
     _write_note_if_absent(WHAT_HAPPENED_FILENAME, text)
+
+
+def write_too_much_note(text: str) -> None:
+    _write_note_if_absent(TOO_MUCH_FILENAME, text)

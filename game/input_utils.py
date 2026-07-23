@@ -3,6 +3,8 @@ import sys
 
 import msvcrt
 
+from . import script
+
 UP = b"H"
 DOWN = b"P"
 ENTER = b"\r"
@@ -22,8 +24,12 @@ def arrow_menu(options: list) -> int:
     for line in _render(options, selected):
         print(line)
 
+    lines_printed = len(options)
+
     while True:
         key = msvcrt.getch()
+        is_invalid = False
+
         if key in (b"\xe0", b"\x00"):
             key2 = msvcrt.getch()
             if key2 == UP:
@@ -31,14 +37,32 @@ def arrow_menu(options: list) -> int:
             elif key2 == DOWN:
                 selected = (selected + 1) % len(options)
             else:
-                continue
-            sys.stdout.write(f"\x1b[{len(options)}A")
-            for line in _render(options, selected):
-                sys.stdout.write("\x1b[2K" + line + "\n")
-            sys.stdout.flush()
+                is_invalid = True
         elif key == ENTER:
+            if lines_printed > len(options):
+                sys.stdout.write(f"\x1b[{lines_printed}A")
+                for line in _render(options, selected):
+                    sys.stdout.write("\x1b[2K" + line + "\n")
+                sys.stdout.write("\x1b[2K")
+                sys.stdout.flush()
             print()
             return selected
+        else:
+            is_invalid = True
+
+        sys.stdout.write(f"\x1b[{lines_printed}A")
+        for line in _render(options, selected):
+            sys.stdout.write("\x1b[2K" + line + "\n")
+
+        if is_invalid:
+            sys.stdout.write("\x1b[2K" + script.INVALID_KEY_WARNING + "\n")
+            lines_printed = len(options) + 1
+        else:
+            if lines_printed > len(options):
+                sys.stdout.write("\x1b[2K")
+            lines_printed = len(options)
+
+        sys.stdout.flush()
 
 
 def normalize_command(raw: str) -> str:

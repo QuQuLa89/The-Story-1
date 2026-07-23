@@ -62,26 +62,43 @@ def run_all_clear() -> None:
         say(line)
 
     empty_count = 0
+    invalid_count = 0
+    ctrl_c_count = 0
     eof_count = 0
     while True:
         print("Enter this.")
         print("1. /kill SasaharaKazuyuki")
         try:
             raw = input("> ")
+        except KeyboardInterrupt:
+            print()
+            ctrl_c_count += 1
+            for line in script.ALL_CLEAR_CTRL_C_RESPONSES[min(ctrl_c_count, 3)]:
+                say(line)
+            continue
         except EOFError:
             eof_count += 1
             for line in script.CHAPTER_XXX_KILL_EOF_RESPONSES[min(eof_count, 3)]:
                 say(line)
             continue
 
-        if normalize_command(raw) == "kill sasaharakazuyuki":
+        cmd = normalize_command(raw)
+        if cmd == "kill sasaharakazuyuki":
             return
         if raw.strip() == "":
             empty_count += 1
             for line in script.CHAPTER_XXX_KILL_EMPTY_RESPONSES[min(empty_count, 3)]:
                 say(line)
+        elif cmd == "kill sasahara kazuyuki":
+            for line in script.ALL_CLEAR_CLOSE_CALL_SPACE:
+                say(line)
+        elif cmd in ("kill sasahara", "kill kazuyuki"):
+            for line in script.ALL_CLEAR_CLOSE_CALL_OMIT:
+                say(line)
         else:
-            print("（そのコマンドは認識されませんでした）")
+            invalid_count += 1
+            for line in script.ALL_CLEAR_INVALID_RESPONSES[min(invalid_count, 3)]:
+                say(line)
 
 
 def run_chapter_xxx() -> None:
@@ -116,6 +133,12 @@ def _fight_prompt(fs: dict, label_line: str, expected_cmd: str) -> str:
         print(label_line)
         try:
             raw = input("> ")
+        except KeyboardInterrupt:
+            print()
+            fs["ctrl_c_count"] = fs.get("ctrl_c_count", 0) + 1
+            for line in script.FIGHT_CTRL_C_RESPONSES[min(fs["ctrl_c_count"], 3)]:
+                say(line)
+            continue
         except EOFError:
             fs["eof_count"] += 1
             for line in script.FIGHT_EOF_RESPONSES[min(fs["eof_count"], 4)]:
@@ -128,7 +151,9 @@ def _fight_prompt(fs: dict, label_line: str, expected_cmd: str) -> str:
             if fs["mercy_count"] >= 5:
                 return "forced_end"
             if cmd != expected_cmd:
-                print("（そのコマンドは認識されませんでした）")
+                print(
+                    "（そのコマンドは認識されませんでした。正しいコマンドを入力してください。）"
+                )
                 continue
             if (
                 fs["mercy_count"] >= 1
@@ -151,19 +176,44 @@ def _fight_prompt(fs: dict, label_line: str, expected_cmd: str) -> str:
                 say(line)
             continue
 
-        if fs["mercy_count"] >= 5:
-            fs["stall_count"] += 1
-            for line in script.FIGHT_STALL_RESPONSES[min(fs["stall_count"], 3)]:
-                say(line)
-            continue
-
         if raw.strip() == "":
             fs["empty_count"] += 1
             for line in script.FIGHT_EMPTY_RESPONSES[min(fs["empty_count"], 4)]:
                 say(line)
             continue
 
-        print("（そのコマンドは認識されませんでした）")
+        fs["invalid_count"] = fs.get("invalid_count", 0) + 1
+        for line in script.FIGHT_INVALID_RESPONSES[min(fs["invalid_count"], 5)]:
+            say(line)
+
+
+def _check_hp_tampering(state: dict, fs: dict) -> None:
+    expected_hp = 400 - fs["turn"] * 100
+    if fs["hp"] == expected_hp:
+        return
+
+    tampered_hp = fs["hp"]
+    if tampered_hp >= 400:
+        for line in script.FIGHT_HP_HIGH_PART1:
+            say(line)
+        fs["hp"] = 400
+        for line in script.FIGHT_HP_HIGH_PART2:
+            say(line)
+    elif 0 <= tampered_hp < 400:
+        for line in script.FIGHT_HP_LOW_PART1:
+            say(line)
+        fs["hp"] = 400
+        for line in script.FIGHT_HP_LOW_PART2:
+            say(line)
+    else:
+        for line in script.FIGHT_HP_NEG_PART1:
+            say(line)
+        fs["hp"] = 400
+        for line in script.FIGHT_HP_NEG_PART2:
+            say(line)
+
+    state["fight_state"] = fs
+    save_data.save(state)
 
 
 def _run_fight_from(state: dict, fs: dict) -> None:
@@ -176,10 +226,12 @@ def _run_fight_from(state: dict, fs: dict) -> None:
         state["fight_state"] = fs
         save_data.save(state)
 
-    def on_console_close(_event) -> bool:
+    def on_console_close(event_type: int) -> bool:
         # ウィンドウを閉じる等の異常終了でも、進行状況を保存して次回起動時にFIGHTシーンへ戻す。
         if not killed:
             persist()
+            if event_type not in (0, 1):
+                save_data.write_too_much_note(script.TOO_MUCH_NOTE)
             if eligible_for_thanks():
                 save_data.write_thanks_note(script.SASAHARA_THANKS_NOTE)
         return False
@@ -189,6 +241,7 @@ def _run_fight_from(state: dict, fs: dict) -> None:
     kernel32.SetConsoleCtrlHandler(handler, True)
 
     try:
+        _check_hp_tampering(state, fs)
         forced_end = False
 
         while fs["turn"] < 3:
@@ -257,6 +310,8 @@ def run_fight(state: dict) -> None:
         "resume_line_shown": False,
         "restart_count": 0,
         "mercy_locked": False,
+        "invalid_count": 0,
+        "ctrl_c_count": 0,
     }
 
     _run_fight_from(state, fs)
